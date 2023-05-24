@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+	<nav class="nav fixed-top">
+		<div class="container">
+			<div class="row items-center">
+				<div class="col">
+					<div class="menu">
+						<ul class="menu-ul">
+							<li><a class="active menu__item" href="{% url 'home' %}"><i class="fa-solid fa-book"></i> Books</a></li>
+							<li class="menu__tab">|</li>
+							<li><a class="menu__item" href="{% url 'category' %}"><i class="fa-solid fa-filter"></i> Categorys</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col">
+					<div class="logo">
+						<a href="{% url 'home' %}"><span class="logo__span">r</span>Books</a>
+					</div>
+				</div>
+				<div class="col">
+					<div class="search">
+						<form class="d-flex" action="{% url 'search' %}" method="GET">
+							{% csrf_token %}
+							<input required class="form-control me-2" type="search" placeholder="Search" name="search" aria-label="Search">
+        					<button class="btn btn-outline-primary" type="submit">Search</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<br>
+	<br>
+	<br>
+
+	<!-- Main Content -->
+
+	<div class="container">
+		{% if books %}
+
+			<h2>Books</h2>
+			<hr>
+
+			<div class="books-container">
+			{% for b in books %}
+				<div class="book">
+					<a href="{% url 'book' b.id %}"><img class="book__img" src="{{ b.img }}"></a>
+					<a href="{% url 'book' b.id %}"><h4 class="book__name">{{ b.name }}</h4></a>
+					<h6 class="book__price">Price: ${{ b.price }}</h6>
+				</div>
+			{% endfor %}
+			</div>
+
+		{% else %}
+			{% if searching_results %}
+
+				<h2>Searching Results</h2>
+				<hr>
+
+				<div class="books-container">
+				{% for b in searching_results %}
+					<div class="book">
+						<a href="{% url 'book' b.id %}"><img class="book__img" src="{{ b.img }}"></a>
+						<a href="{% url 'book' b.id %}"><h4 class="book__name">{{ b.name }}</h4></a>
+						<h6 class="book__price">Price: ${{ b.price }}</h6>
+					</div>
+				{% endfor %}
+				</div>
+
+			{% else %}
+				<h2 class="text-center">No Books Yet.</h2>
+			{% endif %}
+		{% endif %}
+
+	</div>
+
+	<!-- Footer -->
+
+	<div class="container">
+		<hr>
+		<footer>
+			<h5 class="text-center">rBook&copy 2023-2023</h5>
+		</footer>
+	</div>
+
+{% endblock %}
